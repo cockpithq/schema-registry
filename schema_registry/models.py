@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
 
@@ -13,6 +13,17 @@ class Schema(models.Model):
         return self.name
 
 
+class VersionQuerySet(models.QuerySet):
+    @transaction.atomic
+    def create(self, **kwargs):
+        schema = kwargs['schema']
+        schema = Schema.objects.filter(id=schema.id).select_for_update().get()
+        last_version = schema.versions.order_by('number').last()
+        version_number = Version.number + 1 if last_version else 1
+        kwargs.setdefault('number', version_number)
+        return super().create(**kwargs)
+
+
 class Version(models.Model):
     schema = models.ForeignKey(
         to=Schema,
@@ -23,6 +34,7 @@ class Version(models.Model):
     )
     number = models.PositiveIntegerField(_('number'))
     data = models.JSONField(_('data'), default=dict)
+    objects = VersionQuerySet.as_manager()
 
     class Meta:
         verbose_name = _('version')

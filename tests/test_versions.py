@@ -10,10 +10,9 @@ def test_create(api_client, schema: Schema):
     response = api_client.post(
         f'/api/v1/schemas/{schema.name}/versions/',
         data={
-            'number': 1,
-            'data': {'$schema': 'https://json-schema.org/draft/2020-12/schema'},
+            'data': {'type': 'number'},
         },
         format='json',
     )
-    assert response.status_code == status.HTTP_201_CREATED
-    assert schema.versions.exists()
+    assert response.status_code == status.HTTP_201_CREATED, response.data
+    assert schema.versions.filter(number=1).exists()

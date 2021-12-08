@@ -14,3 +14,4 @@ class VersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Version
         fields = 'number', 'data'
+        read_only_fields = ('number',)
