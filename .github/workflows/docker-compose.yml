@@ -1,0 +1,13 @@
+name: CI
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        run: docker compose build web
+      - name: flake8
+        run: docker compose run --rm web flake8
+      - name: pytest
+        run: docker compose run --rm web pytest
