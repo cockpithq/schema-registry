@@ -1,5 +1,8 @@
+from typing import Any, Mapping, Optional
+
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
+from jsonsubschema import isSubschema
 
 
 class Schema(models.Model):
@@ -18,13 +21,19 @@ class VersionQuerySet(models.QuerySet):
     def create(self, **kwargs):
         schema = kwargs['schema']
         schema = Schema.objects.filter(id=schema.id).select_for_update().get()
-        last_version = schema.versions.order_by('number').last()
-        version_number = Version.number + 1 if last_version else 1
+        last_version: Optional[Version] = schema.versions.order_by('number').last()
+        if last_version:
+            last_version.validate_compatibility(kwargs['data'])
+            version_number = last_version.number + 1
+        else:
+            version_number = 1
         kwargs.setdefault('number', version_number)
         return super().create(**kwargs)
 
 
 class Version(models.Model):
+    class NotCompatible(Exception):
+        pass
     schema = models.ForeignKey(
         to=Schema,
         on_delete=models.CASCADE,
@@ -45,3 +54,10 @@ class Version(models.Model):
 
     def __str__(self):
         return '{schema}:{version_number}'.format(schema=self.schema, version_number=self.number)
+
+    def is_compatible(self, data: Mapping[str, Any]) -> bool:
+        return isSubschema(data, self.data)
+
+    def validate_compatibility(self, data: Mapping[str, Any]) -> None:
+        if not self.is_compatible(data):
+            raise self.NotCompatible()

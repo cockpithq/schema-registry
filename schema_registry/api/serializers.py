@@ -15,3 +15,9 @@ class VersionSerializer(serializers.ModelSerializer):
         model = Version
         fields = 'number', 'data'
         read_only_fields = ('number',)
+
+    def create(self, validated_data):
+        try:
+            return super().create(validated_data)
+        except Version.NotCompatible:
+            raise serializers.ValidationError({'data': 'Schema is not backward compatible.'})

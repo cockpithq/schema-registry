@@ -9,6 +9,7 @@ djangorestframework = "*"
 django-environ = "*"
 drf-spectacular = "*"
 pytz = "*"
+jsonsubschema = "*"
 
 [dev-packages]
 wemake-python-styleguide = "*"

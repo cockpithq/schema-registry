@@ -1,3 +1,5 @@
+from typing import Mapping
+
 import pytest
 from django.contrib.auth.models import User
 from model_bakery import baker
@@ -19,10 +21,21 @@ def api_client(user) -> APIClient:
 
 
 @pytest.fixture
+def json_schema_data() -> Mapping:
+    return {
+        'type': 'object',
+        'title': 'Test Type',
+        'properties': {
+            'prop1': {'type': 'integer'},
+        },
+    }
+
+
+@pytest.fixture
 def schema() -> Schema:
     return baker.make(Schema)
 
 
 @pytest.fixture
-def version(schema: Schema) -> Version:
-    return baker.make(Version, schema=schema)
+def version(schema: Schema, json_schema_data) -> Version:
+    return baker.make(Version, schema=schema, data=json_schema_data)
