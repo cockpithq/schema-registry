@@ -19,12 +19,12 @@ class VersionViewSet(viewsets.ModelViewSet):
     lookup_field = 'number'
 
     @cached_property
-    def schema(self) -> Schema:
+    def _schema(self) -> Schema:
         return get_object_or_404(Schema, name=self.kwargs[SchemaViewSet.lookup_field])
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(schema=self.schema)
+        return queryset.filter(schema=self._schema)
 
     def perform_create(self, serializer):
-        serializer.save(schema=self.schema)
+        serializer.save(schema=self._schema)
