@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'schema_registry',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -120,4 +121,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Schema Registry API',
+    'VERSION': 'v1',
+    'SERVE_PUBLIC': True,
+    'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
 }
