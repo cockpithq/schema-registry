@@ -30,7 +30,7 @@ class VersionQuerySet(models.QuerySet):
             try:
                 kwargs['data'] = canonicalizeSchema(kwargs['data'])
             except SchemaError as error:
-                raise Version.InvalidSchema(error)
+                raise Version.InvalidSchemaError(error)
             else:
                 version_number = 1
         kwargs.setdefault('number', version_number)
@@ -41,10 +41,10 @@ class Version(models.Model):
     class Error(Exception):
         pass
 
-    class NotCompatible(Error):
+    class NotCompatibleError(Error):
         pass
 
-    class InvalidSchema(Error):
+    class InvalidSchemaError(Error):
         pass
 
     schema = models.ForeignKey(
@@ -54,7 +54,7 @@ class Version(models.Model):
         related_query_name='version',
         verbose_name=_('schema'),
     )
-    number = models.PositiveIntegerField(_('number'))
+    number = models.PositiveIntegerField(_('number'), editable=False)
     data = models.JSONField(_('data'), default=dict)
     objects = VersionQuerySet.as_manager()
 
@@ -73,4 +73,4 @@ class Version(models.Model):
 
     def validate_compatibility(self, data: Mapping[str, Any]) -> None:
         if not self.is_compatible(data):
-            raise self.NotCompatible('Schema is not backward compatible.')
+            raise self.NotCompatibleError('Schema is not backward compatible.')

@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             name='Version',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.PositiveIntegerField(verbose_name='number')),
+                ('number', models.PositiveIntegerField(verbose_name='number', editable=False)),
                 ('data', models.JSONField(default=dict, verbose_name='data')),
                 ('schema', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='versions', related_query_name='version', to='schema_registry.schema', verbose_name='schema')),
             ],
