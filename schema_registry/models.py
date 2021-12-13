@@ -2,7 +2,8 @@ from typing import Any, Mapping, Optional
 
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
-from jsonsubschema import isSubschema
+from jsonschema.exceptions import SchemaError
+from jsonsubschema import canonicalizeSchema, isSubschema
 
 
 class Schema(models.Model):
@@ -26,14 +27,26 @@ class VersionQuerySet(models.QuerySet):
             last_version.validate_compatibility(kwargs['data'])
             version_number = last_version.number + 1
         else:
-            version_number = 1
+            try:
+                kwargs['data'] = canonicalizeSchema(kwargs['data'])
+            except SchemaError as error:
+                raise Version.InvalidSchema(error)
+            else:
+                version_number = 1
         kwargs.setdefault('number', version_number)
         return super().create(**kwargs)
 
 
 class Version(models.Model):
-    class NotCompatible(Exception):
+    class Error(Exception):
         pass
+
+    class NotCompatible(Error):
+        pass
+
+    class InvalidSchema(Error):
+        pass
+
     schema = models.ForeignKey(
         to=Schema,
         on_delete=models.CASCADE,
@@ -60,4 +73,4 @@ class Version(models.Model):
 
     def validate_compatibility(self, data: Mapping[str, Any]) -> None:
         if not self.is_compatible(data):
-            raise self.NotCompatible()
+            raise self.NotCompatible('Schema is not backward compatible.')

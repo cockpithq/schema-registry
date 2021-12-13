@@ -19,5 +19,5 @@ class VersionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         try:
             return super().create(validated_data)
-        except Version.NotCompatible:
-            raise serializers.ValidationError({'data': 'Schema is not backward compatible.'})
+        except Version.Error as error:
+            raise serializers.ValidationError({'data': str(error)})
