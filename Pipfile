@@ -10,6 +10,7 @@ django-environ = "*"
 drf-spectacular = "*"
 pytz = "*"
 jsonsubschema = "*"
+psycopg2 = "*"
 
 [dev-packages]
 wemake-python-styleguide = "*"
