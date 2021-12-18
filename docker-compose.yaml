@@ -15,3 +15,4 @@ services:
       DEBUG: 1
       SECRET_KEY: django-insecure-873=x2#_fm0gl*ws$xbgvmdnhqphcf6!(-+594e*2w*_^-16d=
       DATABASE_URL: sqlite:////tmp/sqlite/schema-registry.db
+      GS_BUCKET_NAME: shift-dev-1_schema-registry-static
