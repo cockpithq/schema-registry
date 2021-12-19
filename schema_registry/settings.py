@@ -10,7 +10,7 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read env variables from .env file
-env_file = BASE_DIR / '.env'
+env_file = env('ENV_FILE', str, BASE_DIR / '.env')
 environ.Env.read_env(env_file=env_file)
 
 # Quick-start development settings - unsuitable for production
