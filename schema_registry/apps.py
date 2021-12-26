@@ -12,7 +12,7 @@ class DefaultAppConfig(AppConfig):
     verbose_name = _('Schema Registry')
 
     def ready(self) -> None:
-        if settings.SENTRY_DSN:
-            from schema_registry import sentry  # noqa: F401,WPS433
+        if settings.SENTRY_ENABLED:
+            from schema_registry.sentry import init  # noqa: F401,WPS433
         else:
-            logger.warning('Set SENTRY_DSN to enable Sentry.')
+            logger.warning('Sentry is disabled, set SENTRY_DSN to enable it.')

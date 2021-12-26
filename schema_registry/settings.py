@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'schema_registry.sentry.middleware.Catch4xxMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -138,3 +139,4 @@ SPECTACULAR_SETTINGS = {
 }
 
 SENTRY_DSN = env('SENTRY_DSN', default='')
+SENTRY_ENABLED = bool(SENTRY_DSN)
