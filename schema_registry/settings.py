@@ -23,7 +23,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', bool, default=False)
 
 ALLOWED_HOSTS: Container[str] = env('ALLOWED_HOSTS', list, default=[])
-CSRF_TRUSTED_ORIGINS: Container[str] = env('CSRF_TRUSTED_ORIGINS', list, default=[])
+CSRF_TRUSTED_ORIGINS: Container[str] = env('CSRF_TRUSTED_ORIGINS', list, default=ALLOWED_HOSTS)
 
 # Application definition
 
