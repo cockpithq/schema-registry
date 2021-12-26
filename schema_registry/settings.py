@@ -136,3 +136,5 @@ SPECTACULAR_SETTINGS = {
     'SERVE_PUBLIC': True,
     'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
 }
+
+SENTRY_DSN = env('SENTRY_DSN', default='')
