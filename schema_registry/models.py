@@ -1,5 +1,6 @@
 from typing import Any, Mapping, Optional
 
+from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from jsonschema.exceptions import SchemaError
@@ -15,26 +16,6 @@ class Schema(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class VersionQuerySet(models.QuerySet):
-    @transaction.atomic
-    def create(self, **kwargs):
-        schema = kwargs['schema']
-        schema = Schema.objects.filter(id=schema.id).select_for_update().get()
-        last_version: Optional[Version] = schema.versions.order_by('number').last()
-        if last_version:
-            last_version.validate_compatibility(kwargs['data'])
-            version_number = last_version.number + 1
-        else:
-            try:
-                kwargs['data'] = canonicalizeSchema(kwargs['data'])
-            except SchemaError as error:
-                raise Version.InvalidSchemaError(error)
-            else:
-                version_number = 1
-        kwargs.setdefault('number', version_number)
-        return super().create(**kwargs)
 
 
 class Version(models.Model):
@@ -56,7 +37,6 @@ class Version(models.Model):
     )
     number = models.PositiveIntegerField(_('number'), editable=False)
     data = models.JSONField(_('data'), default=dict)
-    objects = VersionQuerySet.as_manager()
 
     class Meta:
         verbose_name = _('version')
@@ -74,3 +54,31 @@ class Version(models.Model):
     def validate_compatibility(self, data: Mapping[str, Any]) -> None:
         if not self.is_compatible(data):
             raise self.NotCompatibleError('Schema is not backward compatible.')
+
+    def clean(self) -> None:
+        try:
+            self._pre_save(False)
+        except Version.Error as error:
+            raise ValidationError({'data': str(error)})
+
+    @transaction.atomic
+    def save(self, *args, **kwargs) -> None:
+        self._pre_save()
+        super().save(*args, **kwargs)
+
+    def _pre_save(self, with_lock=True):
+        try:
+            self.data = canonicalizeSchema(self.data)
+        except SchemaError as error:
+            raise Version.InvalidSchemaError(error)
+        if not self.pk:
+            schema_queryset = Schema.objects.filter(id=self.schema_id)
+            if with_lock:
+                schema_queryset = schema_queryset.select_for_update()
+            schema = schema_queryset.get()
+            last_version: Optional[Version] = schema.versions.order_by('number').last()
+            if last_version:
+                last_version.validate_compatibility(self.data)
+                self.number = last_version.number + 1
+            else:
+                self.number = 1
