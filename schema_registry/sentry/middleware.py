@@ -1,5 +1,5 @@
-import sentry_sdk
 from django.conf import settings
+import sentry_sdk
 
 
 class Catch4xxMiddleware:

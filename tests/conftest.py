@@ -1,8 +1,8 @@
 from typing import Mapping
 
-import pytest
 from django.contrib.auth.models import User
 from model_bakery import baker
+import pytest
 from rest_framework.test import APIClient
 
 from schema_registry.models import Schema, Version

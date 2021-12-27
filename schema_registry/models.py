@@ -51,9 +51,10 @@ class Version(models.Model):
     def is_compatible(self, data: Mapping[str, Any]) -> bool:
         return isSubschema(data, self.data)
 
-    def validate_compatibility(self, data: Mapping[str, Any]) -> None:
+    def validate_compatibility(self, data: Mapping[str, Any]) -> Mapping[str, Any]:
         if not self.is_compatible(data):
             raise self.NotCompatibleError('Schema is not backward compatible.')
+        return canonicalizeSchema(data)
 
     def clean(self) -> None:
         try:

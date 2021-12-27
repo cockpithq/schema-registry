@@ -10,6 +10,16 @@ class SchemaSerializer(serializers.ModelSerializer):
         read_only_fields = ('versions',)
 
 
+class VersionValidationSerializer(serializers.Serializer):
+    data = serializers.JSONField()
+
+    def validate_data(self, value):
+        try:
+            return self.instance.validate_compatibility(value)
+        except Version.Error as error:
+            raise serializers.ValidationError({'data': str(error)})
+
+
 class VersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Version
