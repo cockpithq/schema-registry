@@ -157,7 +157,7 @@ SENTRY_ENABLED = bool(SENTRY_DSN)
 
 SOCIALACCOUNT_PROVIDERS = {
     'gitlab': {
-        'GITLAB_URL': env('ALLAUTH_GITLAB_URL'),
+        'GITLAB_URL': env('ALLAUTH_GITLAB_URL', ''),
     },
 }
 
