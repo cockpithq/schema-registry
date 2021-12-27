@@ -13,6 +13,7 @@ jsonsubschema = "*"
 psycopg2 = "*"
 django-storages = {extras = ["google"], version = "*"}
 sentry-sdk = "*"
+django-allauth = "*"
 
 [dev-packages]
 wemake-python-styleguide = "*"

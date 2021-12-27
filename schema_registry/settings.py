@@ -32,8 +32,13 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.gitlab',
     'rest_framework',
     'rest_framework.authtoken',
     'schema_registry',
@@ -99,6 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -143,3 +154,13 @@ SPECTACULAR_SETTINGS = {
 
 SENTRY_DSN = env('SENTRY_DSN', default='')
 SENTRY_ENABLED = bool(SENTRY_DSN)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'gitlab': {
+        'GITLAB_URL': env('ALLAUTH_GITLAB_URL'),
+    },
+}
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/admin/'
