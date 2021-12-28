@@ -16,3 +16,4 @@ class DefaultAppConfig(AppConfig):
             from schema_registry.sentry import init  # noqa: F401,WPS433
         else:
             logger.warning('Sentry is disabled, set SENTRY_DSN to enable it.')
+        from schema_registry import receivers  # noqa: F401,WPS433
