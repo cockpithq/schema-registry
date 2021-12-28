@@ -17,7 +17,7 @@ class VersionValidationSerializer(serializers.Serializer):
         try:
             return self.instance.validate_compatibility(value)
         except Version.Error as error:
-            raise serializers.ValidationError({'data': str(error)})
+            raise serializers.ValidationError(str(error))
 
 
 class VersionSerializer(serializers.ModelSerializer):
