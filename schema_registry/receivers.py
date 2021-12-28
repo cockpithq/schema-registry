@@ -6,4 +6,4 @@ from django.dispatch import receiver
 def on_user_signed_up(request, user, **kwargs):
     user.is_superuser = True
     user.is_staff = True
-    user.save(update_fields=('is_superuser', 'is_superuser'))
+    user.save(update_fields=('is_superuser', 'is_staff'))
