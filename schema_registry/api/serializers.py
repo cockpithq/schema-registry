@@ -11,7 +11,7 @@ class SchemaSerializer(serializers.ModelSerializer):
 
 
 class VersionValidationSerializer(serializers.Serializer):
-    data = serializers.JSONField()
+    data = serializers.JSONField()  # type: ignore
 
     def validate_data(self, value):
         try:
