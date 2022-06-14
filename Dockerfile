@@ -15,3 +15,10 @@ RUN pip install gunicorn==20.1.0
 COPY ./schema_registry $SRC_PROJECT_PATH/schema_registry
 COPY ./manage.py $SRC_PROJECT_PATH
 CMD ["gunicorn", "schema_registry.wsgi", "--bind", "0.0.0.0:80"]
+
+FROM base as heroku
+RUN pip install gunicorn==20.1.0 whitenoise==6.2.0
+COPY ./schema_registry $SRC_PROJECT_PATH/schema_registry
+COPY ./manage.py $SRC_PROJECT_PATH
+COPY heroku-release.sh ./
+CMD gunicorn schema_registry.wsgi:application --bind 0.0.0.0:$PORT

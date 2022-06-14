@@ -127,7 +127,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # Define static storage via django-storages[google]
-GS_BUCKET_NAME = env('GS_BUCKET_NAME')
+GS_BUCKET_NAME = env('GS_BUCKET_NAME', default='')
 STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 GS_DEFAULT_ACL = 'publicRead'
 
@@ -166,3 +166,6 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/admin/'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+if env('HEROKU', bool, default=False):
+    from .settings_heroku import *

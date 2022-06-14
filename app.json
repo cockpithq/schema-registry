@@ -1,0 +1,22 @@
+{
+  "name": "Simple JSON Schema Registry",
+  "description": "A Schema Registry app built using Django",
+  "repository": "https://github.com/cockpithq/schema-registry/",
+  "keywords": ["schema-registry", "json-schema"],
+  "stack": "container",
+  "addons": ["heroku-postgresql"],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Django Secret Key",
+      "generator": "secret"
+    },
+    "DEBUG": {
+      "description": "DEBUG",
+      "value": "1"
+    },
+    "HEROKU": {
+      "description": "HEROKU env",
+      "value": "1"
+    }
+  }
+}

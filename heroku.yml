@@ -1,0 +1,19 @@
+setup:
+  addons:
+  - plan: heroku-postgresql
+    as: DATABASE
+  config:
+    DEBUG: 1
+    HEROKU: 1
+    SECRET_KEY: django-insecure-32i8kqxaipev3o9&gez48-ceh2gtj+)_zzz@dssz_n#5*%exkl
+build:
+  config:
+    SECRET_KEY: django-build-collectstatic
+  docker:
+    web:
+      dockerfile: Dockerfile
+      target: heroku
+release:
+  image: web
+  command:
+    - ./heroku-release.sh
