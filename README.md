@@ -3,6 +3,13 @@
 ## Deployment
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/cockpithq/schema-registry/tree/heroku-deploy-button)
 
+After successfully deployed – create superuser:
+```shell
+heroku run python manage.py createsuperuser
+```
+
+For usage – check swagger page:
+https://YOURAPP.herokuapp.com/docs/api/v1/swagger-ui/
 
 ## Development
 
