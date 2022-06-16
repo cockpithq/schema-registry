@@ -1,4 +1,5 @@
 # Schema Registry
+![Test](https://github.com/cockpithq/schema-registry/actions/workflows/test.yml/badge.svg)
 
 ## Development
 
