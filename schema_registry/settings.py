@@ -168,4 +168,4 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 if env('HEROKU', bool, default=False):
-    from .settings_heroku import *
+    from .settings_heroku import *  # noqa: F403,F401,WPS433,WPS300,WPS347
