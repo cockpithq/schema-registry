@@ -1,4 +1,9 @@
 # Schema Registry
+![Test](https://github.com/cockpithq/schema-registry/actions/workflows/test.yml/badge.svg)
+
+![Python](https://img.shields.io/github/pipenv/locked/python-version/cockpithq/schema-registry)
+![License](https://img.shields.io/github/license/cockpithq/schema-registry)
+
 
 ## Development
 
