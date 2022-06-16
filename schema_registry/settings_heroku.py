@@ -1,14 +1,13 @@
-import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# https://devcenter.heroku.com/articles/django-assets#collectstatic-during-builds
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# https://whitenoise.evans.io/en/stable/django.html#
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,10 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
     'rest_framework',
     'rest_framework.authtoken',
     'schema_registry',
