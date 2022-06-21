@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'schema_registry.sentry.middleware.Catch4xxMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,12 +125,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
-# Define static storage via django-storages[google]
-GS_BUCKET_NAME = env('GS_BUCKET_NAME', default='')
-STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_DEFAULT_ACL = 'publicRead'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -167,5 +168,7 @@ LOGIN_REDIRECT_URL = '/admin/'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+# Heroku-specific overrides
 if env('HEROKU', bool, default=False):
-    from .settings_heroku import *  # noqa: F403,F401,WPS433,WPS300,WPS347
+    ALLOWED_HOSTS = ['.herokuapp.com']
+    CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']

@@ -40,7 +40,6 @@ steps:
         /buildstep/execute.sh 
         -i $_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA 
         -s $PROJECT_ID:$_DEPLOY_REGION:$_SERVICE_NAME 
-        -e GS_BUCKET_NAME=schema-registry-static  
         -e SECRET_KEY=$$SECRET_KEY 
         -e DATABASE_URL=$$DATABASE_URL 
         -e 
