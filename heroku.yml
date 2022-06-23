@@ -12,7 +12,7 @@ build:
   docker:
     web:
       dockerfile: Dockerfile
-      target: heroku
+      target: prod
 release:
   image: web
   command:
