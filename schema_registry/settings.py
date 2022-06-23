@@ -167,8 +167,3 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/admin/'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-# Heroku-specific overrides
-if env('HEROKU', bool, default=False):
-    ALLOWED_HOSTS = ['.herokuapp.com']
-    CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']

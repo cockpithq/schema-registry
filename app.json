@@ -14,9 +14,13 @@
       "description": "DEBUG",
       "value": "1"
     },
-    "HEROKU": {
-      "description": "HEROKU env",
-      "value": "1"
+    "ALLOWED_HOSTS": {
+      "description": "Django settings ALLOWED_HOSTS",
+      "value": ".herokuapp.com"
+    },
+    "CSRF_TRUSTED_ORIGINS": {
+      "description": "Django settings CSRF_TRUSTED_ORIGINS",
+      "value": "https://*.herokuapp.com"
     }
   }
 }
