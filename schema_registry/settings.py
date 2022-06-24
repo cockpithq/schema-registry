@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'schema_registry.sentry.middleware.Catch4xxMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,12 +125,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
-# Define static storage via django-storages[google]
-GS_BUCKET_NAME = env('GS_BUCKET_NAME')
-STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_DEFAULT_ACL = 'publicRead'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

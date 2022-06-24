@@ -24,7 +24,7 @@ steps:
         -i $_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA 
         -s $PROJECT_ID:$_DEPLOY_REGION:$_SERVICE_NAME 
         -e GS_BUCKET_NAME=schema-registry-static  
-        -e SECRET_KEY=$$SECRET_KEY 
+        -e SECRET_KEY=$$SECRET_KEY
         -e DATABASE_URL=$$DATABASE_URL 
         -- 
         python manage.py migrate
@@ -40,10 +40,8 @@ steps:
         /buildstep/execute.sh 
         -i $_GCR_HOSTNAME/$PROJECT_ID/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA 
         -s $PROJECT_ID:$_DEPLOY_REGION:$_SERVICE_NAME 
-        -e GS_BUCKET_NAME=schema-registry-static  
-        -e SECRET_KEY=$$SECRET_KEY 
-        -e DATABASE_URL=$$DATABASE_URL 
-        -e 
+        -e SECRET_KEY=$$SECRET_KEY
+        -e DATABASE_URL=$$DATABASE_URL
         -- 
         python manage.py collectstatic --verbosity 2 --no-input
     id: Collect static

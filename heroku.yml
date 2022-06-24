@@ -1,0 +1,11 @@
+build:
+  config:
+    SECRET_KEY: django-build-collectstatic
+  docker:
+    web:
+      dockerfile: Dockerfile
+      target: prod
+release:
+  image: web
+  command:
+    - ./release.sh
